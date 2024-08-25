@@ -24,7 +24,7 @@ function runBot(username) {
         block2 = bot.blockAt(bot.entity.position.offset(3, 1, 0))
         block3 = bot.blockAt(bot.entity.position.offset(4, 1, 0))
         block4 = bot.blockAt(bot.entity.position.offset(5, 1, 0))
-
+        
         if (block3 == null) {
             console.log("bug")
         } else if (block3.name === "coal_block" || block4.name === "coal_block") {
@@ -49,14 +49,17 @@ function runBot(username) {
             console.log("finished one row")
         }
 
-        if (!block) {
+        if (!block || block.name == "coal_block" || block.name == "lapis_block" || block2.name == "coal_block" || block2.name == "lapis_block") {
             await sleep(100);
         } else {
-            await bot.dig(block, "ignore", "raycast"); // 2nd param: true to 'snap at block' or 'ignore' to just not turn head
-            await bot.dig(block2, "ignore", "raycast"); // 2nd param: true to 'snap at block' or 'ignore' to just not turn head
-            await sleep(100);
+            try {
+                bot.dig(block, "ignore", "raycast"); // 2nd param: true to 'snap at block' or 'ignore' to just not turn head
+                await sleep(1)
+                bot.dig(block2, "ignore", "raycast"); // 2nd param: true to 'snap at block' or 'ignore' to just not turn head
+            } finally {
+                await sleep(75);
+            } 
         }
-
         dig()
     }
 
